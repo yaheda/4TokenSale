@@ -8,6 +8,8 @@ contract ZapTokenSale {
   ZapToken public tokenContract;
   uint256 public tokenPrice;
   
+  uint256 public tokensSold;
+
   constructor(ZapToken _tokenContract, uint256 _tokenPrice) public {
     // assign admin
     admin = msg.sender;
@@ -18,5 +20,13 @@ contract ZapTokenSale {
 
   }
 
-  // buytin tokens
+  function buyTokens(uint256 _numberOfTokens) public payable {
+    // require that value is equal to tokens
+    // require that there are enough tokens
+    // require that transfer is successfull
+    // keep track of token sold
+    tokensSold += _numberOfTokens;
+    // emit sell event
+  }
+
 }
