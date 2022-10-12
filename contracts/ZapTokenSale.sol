@@ -46,4 +46,13 @@ contract ZapTokenSale {
     emit SellEvent(msg.sender, _numberOfTokens);
   }
 
+  function endSale() public {
+    // only an admin can
+    require(msg.sender == admin);
+    // transfer remaining tokens back to admin
+    require(tokenContract.transfer(admin, tokenContract.balanceOf(address(this))));
+    // destroy contract
+    selfdestruct(admin);
+  }
+
 }

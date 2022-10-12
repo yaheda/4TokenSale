@@ -66,4 +66,26 @@ contract('ZapTokenSale', function(accounts) {
     
   });
 
+  it('ends token sale', async function() {
+    var instance = await ZapTokenSale.deployed();
+    var zapTokenInstance = await ZapToken.deployed();
+
+    var admin = accounts[0];
+    var buyer = accounts[1];
+
+    try {
+      await instance.endSale({ from: buyer });
+    } catch(error) {
+      assert(error.message.indexOf('revert') >= 0, 'require admin');
+    }
+
+    var receipt = await instance.endSale({ from: admin });
+
+    var adminBalance = await zapTokenInstance.balanceOf(admin);
+    assert.equal(adminBalance.toNumber(), 999990, 'returns all unsoold');
+
+    var tokenPrice = await instance.tokenPrice();
+    assert.equal(tokenPrice, 0, 'price was reset');
+  });
+
 });
