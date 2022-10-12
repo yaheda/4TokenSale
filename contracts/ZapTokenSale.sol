@@ -10,6 +10,11 @@ contract ZapTokenSale {
   
   uint256 public tokensSold;
 
+  event SellEvent(
+    address _buyer,
+    uint256 _amount
+  );
+
   constructor(ZapToken _tokenContract, uint256 _tokenPrice) public {
     // assign admin
     admin = msg.sender;
@@ -20,13 +25,25 @@ contract ZapTokenSale {
 
   }
 
+  // multiply
+  function multiply(uint x, uint y) internal pure returns (uint z) {
+    require(y == 0 || (z = x * y) / y == x);
+  }
+
   function buyTokens(uint256 _numberOfTokens) public payable {
     // require that value is equal to tokens
+    require(msg.value == multiply(_numberOfTokens, tokenPrice)); // for safe maths see ds-math
     // require that there are enough tokens
+    require(tokenContract.balanceOf(address(this)) >= _numberOfTokens);
+
     // require that transfer is successfull
+    require(tokenContract.transfer(msg.sender, _numberOfTokens));
+
+
     // keep track of token sold
     tokensSold += _numberOfTokens;
     // emit sell event
+    emit SellEvent(msg.sender, _numberOfTokens);
   }
 
 }
