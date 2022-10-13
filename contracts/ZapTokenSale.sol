@@ -52,7 +52,7 @@ contract ZapTokenSale {
     // transfer remaining tokens back to admin
     require(tokenContract.transfer(admin, tokenContract.balanceOf(address(this))));
     // destroy contract
-    selfdestruct(admin);
+    selfdestruct(msg.sender);
   }
 
 }
