@@ -9,6 +9,7 @@
   "author": "Abu",
   "license": "ISC",
   "devDependencies": {
+    "@truffle/hdwallet-provider": "^2.1.0",
     "lite-server": "^2.3.0"
   },
   "scripts": {
